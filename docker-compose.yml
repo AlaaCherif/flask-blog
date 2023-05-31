@@ -1,12 +1,10 @@
 version: '3'
 
 services:
-  api:
+  web:
     container_name: flask-blog
     build: .
-    command: flask run
+    command: flask run --host=0.0.0.0
     restart: always
     ports:
-      - '4201:5000'
-    env_file:
-      - .flaskenv
+      - '5000:5000'

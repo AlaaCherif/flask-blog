@@ -1,9 +1,17 @@
-FROM python:3.10-alpine 
+FROM python:3.10
 
-COPY requirements.txt requirements.txt
+WORKDIR /app
+
+COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
 COPY . .
 
-WORKDIR /flask-microblog
+
+ENV FLASK_APP=main.py
+
+
+EXPOSE 5000
+
+CMD ["flask","run"]
