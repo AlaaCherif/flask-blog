@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    {% if title %}
+    <title>{{ title }} - microblog</title>
+    {% else %}
+    <title>microblog</title>
+    {% endif %}
+    <style>
+      * {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
+      .navbar {
+        padding: 1rem 0.7rem;
+        flex-direction: row;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .navlinks > a {
+        text-decoration: none;
+        padding: 10px 5px;
+        border: 1px solid black;
+        border-radius: 8px;
+        color: black;
+      }
+      .message {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 0.75rem 0.5rem;
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      input {
+        outline: none;
+        padding: 0.5rem 0.3rem;
+        border-radius: 8px;
+        border: 1px solid black;
+      }
+      input:focus {
+        border: 1px solid rgb(77, 77, 218);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <h3>Microblog :</h3>
+      <div class="navlinks">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('explore') }}">Explore</a>
+        {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}">Login</a>
+        {% else %}
+        <a href="{{ url_for('user', username=current_user.username) }}"
+          >Profile</a
+        >
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+      </div>
+    </div>
+    <hr />
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li class="message">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+    <div class="content">{% block content %}</div>
+    {% endblock %}
+  </body>
+</html>

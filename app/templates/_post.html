@@ -1,0 +1,74 @@
+<style>
+  .post-container {
+    width: 800px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem 0.75rem;
+    border: 1px solid black;
+    margin-top: 10px;
+    gap: 15px;
+    border-radius: 8px;
+  }
+  .comment-form {
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-end;
+  }
+  .comment {
+    display: flex;
+    gap: 10px;
+  }
+  .comment > div:first-child {
+    font-weight: bold;
+    color: blueviolet;
+  }
+  .post {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 1rem 0.75rem;
+    border: 1px solid black;
+    border-radius: 8px;
+    min-width: 70%;
+  }
+  .post a {
+    text-decoration: none;
+    color: blueviolet;
+  }
+</style>
+<div class="post-container">
+  <div class="post">
+    {% if post.image %}
+    <img
+      height="200"
+      width="200"
+      src="{{ url_for('static', filename='uploads/' + post.image) }}"
+      alt="Uploaded Image"
+    />
+    {% endif %}
+    <div>
+      <h4>
+        <a href="{{ url_for('user', username=post.author.username) }}">
+          {{ post.author.username }}</a
+        >
+      </h4>
+      <p>{{post.body}}</p>
+    </div>
+  </div>
+  <div class="comment-form">
+    <form class="comment-form" action="explore" method="post">
+      {{comment_form.hidden_tag()}} {{ comment_form.comment.label }}
+      <input type="hidden" name="post" value="{{ post.id }}" />
+      {{comment_form.comment(cols=15, rows=4) }} {{ comment_form.submit }}
+    </form>
+    {% for comment in comments %} {% if comment.post_id==post.id %}
+    <div class="comment">
+      <div>{{get_commenter_name(comment.user_id)}}:</div>
+      <div>{{comment.comment}}</div>
+    </div>
+    {%endif%} {%endfor%}
+  </div>
+</div>
